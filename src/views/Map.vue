@@ -22,7 +22,7 @@
       icon="el-icon-s-unfold"
     ></el-button>
 
-    <div class="sidebar-map map" id="map"></div>
+    <div data-testid="map" class="sidebar-map map" id="map"></div>
 
     <el-drawer
       title="Filter"
@@ -162,51 +162,55 @@ export default Vue.extend({
     },
 
     async addCarsToMap(locationName: string, map: Map) {
-      const layers: Marker[] = [];
+      try {
+        const layers: Marker[] = [];
 
-      const cars = await mapApi.getCars(locationName);
+        const cars = await mapApi.getCars(locationName);
 
-      cars.data.forEach((car: Car): void => {
-        const {
-          model,
-          numberPlate,
-          vin,
-          fuel,
-          position: { latitude, longitude }
-        } = car;
-        const popupDetail = `
-          <p>model: ${model}</p>
-          <p>numberPlate: ${numberPlate}</p>
-          <p>vin: ${vin}</p>
-          <p>location: latitude: ${latitude}, longitude: ${longitude}</p>
-        `;
+        cars.data.forEach((car: Car): void => {
+          const {
+            model,
+            numberPlate,
+            vin,
+            fuel,
+            position: { latitude, longitude }
+          } = car;
+          const popupDetail = `
+            <p>model: ${model}</p>
+            <p>numberPlate: ${numberPlate}</p>
+            <p>vin: ${vin}</p>
+            <p>location: latitude: ${latitude}, longitude: ${longitude}</p>
+          `;
 
-        if (!this.carModels[model]) {
-          this.carModels[model] = this.carModelCount++;
-        }
+          if (!this.carModels[model]) {
+            this.carModels[model] = this.carModelCount++;
+          }
 
-        if (this.filterByModel && this.model && model !== this.model) return;
-        if (this.filterByGuage && fuel !== this.fuelLevel) return;
+          if (this.filterByModel && this.model && model !== this.model) return;
+          if (this.filterByGuage && fuel !== this.fuelLevel) return;
 
-        if (this.layerGroup[locationName]) {
-          this.layerGroup[locationName].clearLayers();
-          delete this.layerGroup[locationName];
-        }
+          if (this.layerGroup[locationName]) {
+            this.layerGroup[locationName].clearLayers();
+            delete this.layerGroup[locationName];
+          }
 
-        const marker1 = L.marker([latitude, longitude], {
-          icon: this.getIcon(this.carModels[model], "car")
-        })
-          .bindPopup(popupDetail, { closeButton: true })
-          .on("click", (e: L.LeafletMouseEvent) => map.setView(e.latlng, 13));
+          const marker1 = L.marker([latitude, longitude], {
+            icon: this.getIcon(this.carModels[model], "car")
+          })
+            .bindPopup(popupDetail, { closeButton: true })
+            .on("click", (e: L.LeafletMouseEvent) => map.setView(e.latlng, 13));
 
-        const marker2 = L.marker([latitude, longitude], {
-          icon: this.getPicker(this.carModels[model], fuel)
-        }).on("click", (e: L.LeafletMouseEvent) => map.setView(e.latlng, 13));
+          const marker2 = L.marker([latitude, longitude], {
+            icon: this.getPicker(this.carModels[model], fuel)
+          }).on("click", (e: L.LeafletMouseEvent) => map.setView(e.latlng, 13));
 
-        layers.push(...[marker1, marker2]);
-      });
+          layers.push(...[marker1, marker2]);
+        });
 
-      this.layerGroup[locationName] = L.layerGroup(layers).addTo(map);
+        this.layerGroup[locationName] = L.layerGroup(layers).addTo(map);
+      } catch (ex) {
+        console.log(ex);
+      }
     },
 
     fetchCarsOnInterval() {
@@ -224,7 +228,6 @@ export default Vue.extend({
 
     getIcon(index: number, type: string) {
       if (index > 10) {
-        console.log(index);
         index = 1;
       }
 
