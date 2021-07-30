@@ -1,0 +1,147 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#map {
+    width: 100vw;
+    height: 100vh;
+}
+
+.location-selector {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 99999;
+    font-size: 20px;
+    padding: 10px;
+    box-shadow: 0 0 10px #000000;
+}
+
+.logo {
+    position: absolute;
+    left: 80px;
+    top: 20px;
+    z-index: 99999;
+}
+
+.sidebar.collapsed {
+    height: 35px;
+    left: 12px;
+    width: 30px;
+    top: 80px;
+
+    .sidebar-tabs {
+        width: 30px;
+        top: 0px;
+
+        ul {
+            width: 30px;
+        }
+    }
+}
+
+.my-car-pin {
+    bottom: 5px;
+    position: absolute;
+
+    .my-car-guage {
+        position: absolute;
+        top: 18px;
+        left: 15px;
+        font-weight: bold;
+        color: #000;
+        font-size: 12px;
+    }
+}
+
+
+
+.el-select {
+    position: absolute !important;
+}
+
+.el-select-dropdown.el-popper {
+    z-index: 100000 !important;
+}
+
+.el-button.el-button--default.drawer {
+    position: absolute !important;
+    left: 10px !important;
+    top: 79px !important;
+    z-index: 99999 !important;
+    padding: 9px 9px !important;
+}
+
+.el-drawer__wrapper {
+    z-index: 100000 !important;
+
+    .el-drawer__header {
+        padding-left: 0px !important; 
+        text-align: left !important;
+    }
+
+    .el-drawer__title {
+        padding: 20px !important;
+    }
+
+    .el-drawer__body {
+        .car-models {
+            height: 55px;
+        }
+
+        .section {
+            text-align: left;
+            padding: 10px;
+        }
+
+        .clear-filter {
+            text-align: right;
+        }
+    }
+
+    .el-drawer.ltr {
+        padding: 20px !important;
+    }
+
+    
+    
+    
+    
+    
+}
+@media only screen and (max-width: 768px) {
+    .el-drawer.ltr {
+        width: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .el-drawer.ltr {
+        width: 70% !important;
+    }
+    .el-select.location-selector {
+        width: 150px !important;
+    }
+    .logo {
+        left: 60px;
+    }
+    // .leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive {
+    //     width: 70px !important;
+    //     height: 70px !important;
+    // }
+}
+
+@media only screen and (max-width: 320px) {
+    .el-drawer.ltr {
+        width: 80% !important;
+    }
+    .logo {
+        left: 50px;
+        width: 70px;
+    }
+}
+
+.el-select-dropdown.el-popper, .el-tooltip__popper.is-dark {
+    z-index: 100000 !important;
+}
